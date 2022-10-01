@@ -2,7 +2,6 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const uuid = require('uuid');
 
 // Init express
 const app = express();
@@ -12,9 +11,7 @@ const PORT = process.env.PORT || 3001;
 
 // Set static route
 app.use(express.static('public')) 
-
 app.use(express.json());
-// app.use(express.urlencoded({ extended: false}));
 
 
 // Set Notes GET route
@@ -29,7 +26,7 @@ app.post('/api/notes', (req, res) => {
 
     // Read current note list (in contents of db.json)
     let noteArr = JSON.parse(fs.readFileSync('./db/db.json', 'utf-8'));
-    note.id = uuid;
+    note.id = noteArr.length + 1;
     noteArr.push(note);
 
     // Write array with new list back to db.json (overwriting old)
