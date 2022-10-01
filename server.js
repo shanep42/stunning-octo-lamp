@@ -21,11 +21,10 @@ app.get('/notes', (req, res) => {
 // Notes POST route
 app.post('/api/notes', (req, res) => {
     var note = req.body;
-    var noteArr = fs.readFileSync('./db/db.json');
+    var noteArr = JSON.parse(fs.readFileSync('./db/db.json'));
     noteArr.push(note);
-    fs.writeFileSync('.db/db.json', noteArr);
+    fs.writeFileSync('db/db.json', JSON.stringify(noteArr));
     res.json(noteArr);
-    //TODO: Why is noteArr.push() "not a function?"
 })
 
 // Catch-all route
