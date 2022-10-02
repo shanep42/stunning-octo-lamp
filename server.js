@@ -10,7 +10,7 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Set static route
-app.use(express.static('public')) 
+app.use(express.static('public'))
 app.use(express.json());
 
 
@@ -36,6 +36,20 @@ app.post('/api/notes', (req, res) => {
     // Write array with new list back to db.json (overwriting old)
     fs.writeFileSync('db/db.json', JSON.stringify(noteArr));
     res.json(noteArr);
+})
+
+// DELETE route
+app.delete('/api/notes', (req, res) => {
+    let noteArr = JSON.parse(fs.readFileSync('./db/db.json', 'utf-8'));
+    let newNoteArr = [];
+    for (let note in noteArr) {
+        if (note.id != req.params.id) {
+            newNoteArr.push(note);
+        };
+    }
+    fs.writeFileSync('.db/db.json', JSON.stringify(newNoteArr));
+    res.json(newNoteArr);
+
 })
 
 // Catch-all route
