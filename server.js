@@ -39,18 +39,17 @@ app.post('/api/notes', (req, res) => {
 })
 
 // DELETE route
-app.delete('/api/notes', (req, res) => {
-    let noteArr = JSON.parse(fs.readFileSync('./db/db.json', 'utf-8'));
-    let newNoteArr = [];
-    for (let note in noteArr) {
-        if (note.id != req.params.id) {
-            newNoteArr.push(note);
-        };
-    }
-    fs.writeFileSync('.db/db.json', JSON.stringify(newNoteArr));
-    res.json(newNoteArr);
+app.delete("/api/notes/:id", (req, res) => {
+    let noteArr = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
+    let noteID = (req.params.id).toString();
 
-})
+    noteArr = noteArr.filter(selected => {
+        return selected.id != noteID;
+    })
+
+    fs.writeFileSync("./db/db.json", JSON.stringify(noteArr));
+    res.json(noteArr);
+});
 
 // Catch-all route
 app.get('*', (req, res) => {
